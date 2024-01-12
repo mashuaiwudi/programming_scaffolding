@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask Request Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        // JavaScript 函数，用于处理按钮点击
+        var common_prefix = "http://107.151.253.158:8088/"
+
+        function sendRequest() {
+            $.ajax({
+                url: common_prefix + "generate_idea",
+                type: "GET",
+                async: true
+                }).done(function (data) {
+                    try{
+                        console.log(data);
+
+                        answer = data.replaceAll("\\n", "<br>");
+                        answer = answer.replaceAll("\\","");
+
+                        console.log(answer);
+
+                        document.getElementById("response").innerHTML = answer;
+                    }
+                    catch(error){
+                        console.log('fail');
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log('fail');
+                });
+            }
+    </script>
+</head>
+<body>
+    <button onclick="sendRequest()">Send GPT calling request to Flask</button>
+    <p>The response: /p>
+    <div id="response"></div>
+</body>
+</html>
