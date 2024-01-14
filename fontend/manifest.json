@@ -1,0 +1,48 @@
+{
+    "manifest_version": 3,
+    "name": "Scaffold Me",
+    "description": "This is a tool that assists learners in learning programming",
+    "version": "1.0.1",
+    "icons": {
+      "16": "robot.png",
+      "32": "robot.png",
+      "48": "robot.png",
+      "128": "robot.png"
+    },
+    "background": {
+      "service_worker": "service-worker.js"
+    },
+    "side_panel": {
+      "default_path": "mainpage.html",
+      "openPanelOnActionClick": true
+    },
+    "action": {
+      "default_title": "Scaffold Me"
+    },
+    "offline_enabled": true,
+    "minimum_chrome_version": "114",
+    "permissions": ["sidePanel",
+    "bookmarks", 
+    "storage", 
+    "tabs",
+    "scripting",
+    "clipboardWrite",
+    "clipboardRead"],
+
+    "content_scripts": [{
+        "matches": ["https://leetcode.com/problems/*/description/"],
+        "js": ["my_content_script.js"],
+        "run_at": "document_end"
+    }],
+
+    "sandbox": {
+      "pages": [
+        "quizs/step1.html",
+        "quizs/select_rank.html", 
+        "quizs/cluster.html",
+        "quizs/parsons_example.html",
+        "quizs/code_completion3.html"
+      ]
+    }
+
+}

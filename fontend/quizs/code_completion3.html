@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- 引入CodeMirror样式 -->
+  <link rel="stylesheet" href="../css/codemirror.min.css">
+  <!-- 引入CodeMirror库 -->
+  <script src="../js/codemirror.min.js"></script>
+  <!-- 引入Python模式 -->
+  <script src="../js/python.min.js"></script>
+  <!-- 引入搜索光标插件 -->
+  <script src="../js/searchcursor.min.js"></script>
+  <meta charset="UTF-8">
+
+  <style>
+    .CodeMirror {
+      border: 1px solid #eee;
+      height: auto;
+    }
+    input.fill-blank {
+      min-width: 50px;  /* 最小宽度 */
+
+      border: 1px solid #888;
+      border-radius: 4px;
+      padding: 4px 6px;
+      margin: 0 2px;
+      font-family: monospace;
+      font-size: 14px;
+      transition: width 0.2s ease; /* 平滑宽度变化 */
+    }
+    
+    button {
+            width: 120px;
+            padding: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #11264f; /* Dark blue background */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s ease; /* Smooth background transition */
+        }
+
+    button:hover {
+        background-color: #0b1c2a; /* Darker blue on hover */
+    }
+
+
+    /* 隐藏输入框的内部增减箭头（针对type="number"的情况）*/
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<h2>Complete the code</h2>
+<textarea id="editor">def greet():
+    name = "_____"  # Fill the name here
+    print(f"Hello, {name}!")</textarea>
+    <button id="copyButton">Copy Code</button>
+
+    <script src="../js/code_completion3.js"></script>
+</body>
+</html>

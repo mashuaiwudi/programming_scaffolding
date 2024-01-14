@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Combined Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h2 {
+            color: #11264f;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #11264f;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #11264f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0b1c2a;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .incorrect {
+            color: red;
+        }
+    </style>
+
+<script src="../js/jquery.min.js"></script>
+</head>
+<body>
+
+    <!-- Content from Page 1 -->
+    <h2>Try with an input</h2>
+    <p>Enter an input and you will get the corresponding output and explanation:</p>
+    <input type="text" id="userInput" placeholder="Enter your text here">
+    <button onclick="get_output()">Get Output</button>
+    <p id="output" class="feedback"></p>
+    <p id="explanation1" class="feedback"></p>
+
+    <br><br><br><br>
+    <!-- Content from Page 2 -->
+    <h2>Do you know the output?</h2>
+    <p><b>Given input: </b></p>
+    <p id="input_test">nums = [3,3], target = 6</p>
+    <p><b>What is the output?</b></p>
+    <input type="text" id="userAnswer" placeholder="Enter your answer here">
+    <button onclick="checkAnswer()">Submit</button>
+    <p id="feedback2" class="feedback"></p>
+
+<script>
+
+
+var common_prefix = "http://107.151.253.158:8088/";
+
+// 假设这是从网页中读取到的
+var programming_problem = `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+You can return the answer in any order.`
+
+
+var jsonData = null;
+
+
+
+function get_output() {
+
+    // 首先，向server发送问题，得到关于solution的相关信息
+    $.ajax({
+    url: common_prefix + "inputoutput",
+    type: "GET",
+    data: {
+        "problem": String(programming_problem), 
+        "input": String(document.getElementById('userInput').value)
+    }
+    }).done(function (data) {
+        try {
+            console.log(data);
+
+            // 检查data是否已经是对象
+            var jsonData = (typeof data === "object") ? data : JSON.parse(data);
+            console.log("JSON Object:", jsonData);
+
+            document.getElementById('output').innerHTML = '<b>Output:</b> ' + jsonData.output;
+            document.getElementById('explanation1').innerHTML = '<b>Explanation:</b> ' + jsonData.explanation;
+        }
+        catch (error) {
+            console.error('Error processing response:', error);
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error('AJAX request failed:', textStatus, errorThrown);
+    });
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function checkAnswer() {
+
+    // 首先，向server发送问题，得到关于solution的相关信息
+    $.ajax({
+    url: common_prefix + "checkoutput",
+    type: "GET",
+    data: {
+        "problem": String(programming_problem), 
+        "input": String(document.getElementById('input_test').textContent),
+        "output": String(document.getElementById('userAnswer').value)
+    }
+    }).done(function (data) {
+        try {
+            console.log(data);
+
+            // Assuming data is already a JSON object. If not, parse it.
+            var jsonData = (typeof data === "string") ? JSON.parse(data) : data;
+            console.log("JSON Object:", jsonData);
+
+
+            var explanation_text = jsonData.explanation;
+
+
+            var feedbackElement = document.getElementById('feedback2');
+            if (parseInt(jsonData.correctness) === 1) {
+                feedbackElement.innerHTML = "Correct! <br>" + "<b>Explanation: </b>" + explanation_text;
+                feedbackElement.className = 'correct';
+            } else {
+                feedbackElement.innerHTML = "Incorrect! <br>" + "<b>Explanation: </b>" + explanation_text;
+                feedbackElement.className = 'incorrect';
+            }
+        }
+        catch (error) {
+            console.error('Error processing response:', error);
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error('AJAX request failed:', textStatus, errorThrown);
+    });
+
+
+}
+</script>
+
+</body>
+</html>

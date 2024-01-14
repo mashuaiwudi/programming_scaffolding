@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Dropping and Reordering the Code Lines</title>
+        <link href="../parsonslib/parsons.css" rel="stylesheet" />
+        <link href="../parsonslib/lib/prettify.css" rel="stylesheet" />
+        <script src="../parsonslib/lib/prettify.js"></script>
+        <style>
+        button {
+            width: 120px;
+            padding: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #11264f; /* Dark blue background */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s ease; /* Smooth background transition */
+        }
+
+        button:hover {
+            background-color: #0b1c2a; /* Darker blue on hover */
+        }
+        </style>
+    </head>
+    <body>
+        <br><br><br>
+        <h2>Dropping and Reordering the Code Lines</h2>
+        <div id="sortableTrash" class="sortable-code"></div>
+        <div id="sortable" class="sortable-code">
+        </div>
+        <div style="clear:both;"></div>
+        <p>
+            <button id="newInstanceLink">New instance</button>
+            <button id="feedbackLink">Get feedback</button>
+        </p>
+        <script src="../parsonslib/lib/jquery.min.js"></script>
+        <script src="../parsonslib/lib/jquery-ui.min.js"></script>
+        <script src="../parsonslib/lib/jquery.ui.touch-punch.min.js"></script>
+        <script src="../parsonslib/lib/underscore-min.js"></script>
+        <script src="../parsonslib/lib/lis.js"></script>
+        <script src="../parsonslib/parsons.js"></script>
+        <script>
+
+        // Given JSON data as a string
+        var jsonData = `{
+            "solution1": {
+                "solution_name": "Two-Pointer Technique",
+                "solution_logic": "Use two pointers, one for iterating over the array (j) and another one (i) for keeping track of the position to overwrite with the unique elements. If nums[j] is different from nums[i], increment i and assign the value of nums[j] to nums[i]. The process continues until the end of the array.",
+                "algorithm_used": "Two-Pointer Technique",
+                "data_structure_used": "Array",
+                "solution_codes": "def remove_duplicates(nums):\\n    if not nums:\\n        return 0\\n\\n    i = 0\\n    for j in range(1, len(nums)):\\n        if nums[j] != nums[i]:\\n            i += 1\\n            nums[i] = nums[j]\\n    return i + 1\\n\\n# Example usage\\n# nums = [1, 1, 2]\\n# k = remove_duplicates(nums)\\n# print(f'Number of unique elements = {k} and modified array = {nums[:k]}')"
+            },
+            "solution2": {
+                "solution_name": "In-place Set Conversion",
+                "solution_logic": "Convert the sorted array into a set to eliminate duplicates, and then write the elements back into the original array maintaining order. Because the original array is sorted, converting into a set and converting back will retain order.",
+                "algorithm_used": "Set Conversion and Iteration",
+                "data_structure_used": "Set and Array",
+                "solution_codes": "def remove_duplicates(nums):\\n    unique_values = list(set(nums))\\n    unique_values.sort(key=lambda x: nums.index(x))\\n    for i in range(len(unique_values)):\\n        nums[i] = unique_values[i]\\n    return len(unique_values)\\n\\n# Example usage\\n# nums = [1, 1, 2]\\n# k = remove_duplicates(nums)\\n# print(f'Number of unique elements = {k} and modified array = {nums[:k]}')"
+            }
+        }`;
+        
+        
+        jsonData = JSON.parse(jsonData);
+        
+        const solution = jsonData["solution1"];
+
+    
+        // const code = solution.solution_codes
+
+
+        var initial = solution.solution_codes;
+    //     `class Solution:
+    // def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+    //     dummyHead = ListNode(0)
+    //     tail = dummyHead
+    //     carry = 0
+    //     while l1 is not None or l2 is not None or carry != 0:
+    //         digit1 = l1.val if l1 is not None else 0
+    //         digit2 = l2.val if l2 is not None else 0
+    //         sum = digit1 + digit2 + carry
+    //         digit = sum % 10
+    //         carry = sum // 10
+    //         newNode = ListNode(digit)
+    //         tail.next = newNode
+    //         tail = tail.next
+    //         l1 = l1.next if l1 is not None else None
+    //         l2 = l2.next if l2 is not None else None
+    //     result = dummyHead.next
+    //     dummyHead.next = None
+    //     return result` 
+
+        function displayErrors(fb) {
+            if(fb.errors.length > 0) {
+                alert(fb.errors[0]);
+            }
+        } 
+
+        $(document).ready(function(){
+            var parson = new ParsonsWidget({
+                'sortableId': 'sortable',
+                'trashId': 'sortableTrash',
+                'max_wrong_lines': 1,
+                'feedback_cb' : displayErrors
+            });
+            parson.init(initial);
+            parson.shuffleLines();
+            $("#newInstanceLink").click(function(event){
+                event.preventDefault();
+                parson.shuffleLines();
+            });
+            $("#feedbackLink").click(function(event){
+                event.preventDefault();
+                parson.getFeedback();
+            });
+        });
+        </script>
+    </body>
+</html>
