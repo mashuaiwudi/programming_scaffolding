@@ -50,7 +50,7 @@
                 "solution_logic": "Use two pointers, one for iterating over the array (j) and another one (i) for keeping track of the position to overwrite with the unique elements. If nums[j] is different from nums[i], increment i and assign the value of nums[j] to nums[i]. The process continues until the end of the array.",
                 "algorithm_used": "Two-Pointer Technique",
                 "data_structure_used": "Array",
-                "solution_codes": "def remove_duplicates(nums):\\n    if not nums:\\n        return 0\\n\\n    i = 0\\n    for j in range(1, len(nums)):\\n        if nums[j] != nums[i]:\\n            i += 1\\n            nums[i] = nums[j]\\n    return i + 1\\n\\n# Example usage\\n# nums = [1, 1, 2]\\n# k = remove_duplicates(nums)\\n# print(f'Number of unique elements = {k} and modified array = {nums[:k]}')"
+                "solution_codes": "def remove_duplicates(nums):\\n    if not nums: \\n    abc = 123#distractor\\n       return 0\\n\\n    i = 0\\n    for j in range(1, len(nums)):\\n     if nums[j] != nums[i]:\\n            i += 1\\n            nums[i] = nums[j]\\n    return i + 1\\n\\n"
             },
             "solution2": {
                 "solution_name": "In-place Set Conversion",

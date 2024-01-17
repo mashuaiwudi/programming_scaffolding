@@ -22,7 +22,8 @@ from openai import OpenAI
 
 client = OpenAI(
     # defaults to os.environ.get("OPENAI_API_KEY")
-    api_key='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',
+    # api_key='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',
+    api_key='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'
 )
 
 
@@ -253,6 +254,58 @@ def checkoutput():
     resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Methods'] = 'GET,POST'
     return resp
+
+
+
+
+@app.route('/identify_step', methods = ['GET', 'POST'])
+def identify_step():
+      
+    print('Request got!')
+
+
+    problem = ''
+    learner_code = ''
+
+    if request == None or request == '':
+        print('The received data is null or empty.')
+    else:
+
+        learner_code = request.args.get('learner_code')
+        problem = request.args.get('problem')
+
+
+    identifystep_prompt = '''Task: For the given programming problem and the incomplete solution from a learner, predict which is the learner's current stage. We have 4 stages in total: 1:understanding, 2:find an idea, 3: idea to step, 4: implementation.
+    Instruction:Please ONLY RETURN the result in this JSON format:{'current_stage':'write a number here, 1 representing stage 1, 2 representing stage 2,etc.'}
+    Given programming problem:''' + problem + '''
+    Given solution from learner:''' + learner_code
+
+    try:
+        completion = client.chat.completions.create(
+            model=model_name,
+            messages=[{"role": "user", "content": identifystep_prompt}],
+            response_format={"type": "json_object"}
+        )
+        content = completion.choices[0].message.content.strip()
+    except Exception as e:
+        print(e)
+        return "ChatGPT error"
+
+    print('=====================To send back=========================')
+    print(content)
+
+
+    # to_json = json.dumps(content)
+    # print(to_json)
+    resp = Response(content)
+
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['Access-Control-Allow-Methods'] = 'GET,POST'
+    return resp
+
+
+
+
 
 
 
