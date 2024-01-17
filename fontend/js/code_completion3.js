@@ -29,6 +29,20 @@ var jsonData = `{
   "code_with_spaces": "def removeDuplicates(nums):\n    if not nums:\n        return [TO FILL]\n\n    # Initialize the two pointers\n    i = [TO FILL] # The slow pointer\n    for j in range([TO FILL], len(nums)): # The fast pointer\n        # When a unique element is encountered\n        if nums[j] != nums[i]:\n            # Move the slow pointer\n            i += [TO FILL]\n            # Replace the element at the slow pointer with the current element\n            nums[i] = nums[j]\n\n    # Return the number of unique elements\n    return i + [TO FILL]\n"
 }`
 
+
+var actual_code = ['0', '0', '1', '1', '1'];
+// "def remove_duplicates(nums):": ["Defines a function named 'remove_duplicates' taking 'nums' as input.", "Start of a function definition that aims to remove duplicates from an array."],
+// "if not nums:": ["Checks if the input array 'nums' is empty or not.", "Conditional check for empty array to handle the edge case of an empty input."],
+// "return 0": ["Return 0 if 'nums' is empty.", "No elements to process, so return 0 indicating no unique elements."],
+// "i = 0": ["Initialize a pointer 'i' to 0.", "Set up a pointer to track the position of the last unique element found."],
+// "for j in range(1, len(nums))": ["Start a loop with pointer 'j' starting from 1 to the end of 'nums'.", "Iterate over the array, starting from the second element, to compare adjacent elements."],
+// "if nums[j] != nums[i]": ["Check if the current element is different from the last unique element found.", "Conditional check for finding a new unique element."],
+// "i += 1": ["Increment the pointer 'i'.", "Move the unique elements' pointer to the next position where a new unique element will be placed."],
+// "nums[i] = nums[j]": ["Assign the value at 'j' to the position at 'i'.", "Copy the unique element to its new position in the array."],
+// "return i + 1": ["Return the total number of unique elements found in 'nums'.", "The result is the index plus one because array indexing is zero-based."]
+
+
+
 // console.log(jsonData)
 
 // // 将字符串中的换行符（\n）替换为它们的字面量表示（\\n）
@@ -119,4 +133,18 @@ const originalCode = jsonData.code_with_spaces;
     }, function(err) {
       console.error('Cannot copy the code: ', err);
     });
+  });
+
+
+
+  // 用户实在写不出来了，把代码帮用户补全
+  document.getElementById('showallButton').addEventListener('click', function() {
+    var fullCode = editor.getValue();
+
+    var i = 0;
+    inputs.forEach(function(item) {
+      item.input.value = actual_code[i];
+      i += 1;
+    });
+
   });

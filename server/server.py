@@ -52,7 +52,7 @@ def generate_idea():
         problem = request.args.get('problem')
 
     generate_idea_prompt = '''Task: For the given programming problem, help me work out as many solutions as possible and return the intended result.
-    Instruction:Please ONLY RETURN the result in this JSON format:{'solution1':{'solution_name':'','solution_logic':'','algorithm_used':'the algorithm used in the solution','data_structure_used':'the data structure used in the solution','time_complexity':'','space_complexity':'', 'solution_codes':'this code should be in a good format with easy-to-read indent'},'solution2':{...}}. Note that for time_complexity and space_complexity, only return the results do not return the reasons.
+    Instruction:Please ONLY RETURN the result in this JSON format:{'solution1':{'solution_name':'','solution_logic':'','algorithm_used':'the algorithm used in the solution','data_structure_used':'the data structure used in the solution','time_complexity':'', 'reason_of_time_complexity':'','space complexity':'','reason_of_space_complexity':'','solution_codes':'this code should be in a good format with easy-to-read indent'},'solution2':{...}}.
     Programming problem:''' + problem + '''
 
     You may assume that each input would have exactly one solution, and you may not use the same element twice.

@@ -189,7 +189,7 @@
             <div class="column" id="candidateItems"></div>
         
             <div class="column" id="selectedItems">
-                <p>Drag items here and sort them</p>
+                <p>Drag items here and sort them</p>candidateItems
             </div>
         </div>
         
@@ -226,7 +226,7 @@
             </table>
         </form>
         
-        <button id="checkButton">Check Answers</button>
+        <button id="checkButton" onclick="checkAnswer_matrix()">Check Answers</button>
         <div id="answerStatus"></div>
     </div>
 
@@ -295,7 +295,8 @@ function call_server(){
 
 
 var solution_time_complexity = {};
-
+var solutions = null;
+var solution_name_key = {};
 
 function load_interface(){
     // var jsonData = `{
@@ -315,13 +316,15 @@ function load_interface(){
     //     }
     // }`;
     // var solutions = JSON.parse(jsonData);
-    var solutions = jsonData;
+    solutions = jsonData;
     console.log(solutions);
     var candidateItemsDiv = document.getElementById('candidateItems');
 
     // 动态创建和添加元素
     Object.keys(solutions).forEach((key, index) => {
         const solution = solutions[key];
+        solution_name_key[solution.solution_name] = key;
+
 
         // 创建外层draggable元素
         const draggableElement = document.createElement('div');
@@ -350,6 +353,7 @@ function load_interface(){
         // 对complexity的转化
         if (solution.time_complexity == "O(1)"){
             solution_time_complexity[solution.solution_name] = 0;
+            
         }
         if (solution.time_complexity == "O(n)"){
             solution_time_complexity[solution.solution_name] = 1;
@@ -582,21 +586,21 @@ function load_interface(){
             const optionAInput = document.createElement("input");
             optionAInput.type = "radio";
             optionAInput.name = "option" + key;
-            optionAInput.value = "A";
+            optionAInput.value = "O(n^2)";
             optionACell.appendChild(optionAInput);
-
+                  
             const optionBCell = document.createElement("td");
             const optionBInput = document.createElement("input");
             optionBInput.type = "radio";
             optionBInput.name = "option" + key;
-            optionBInput.value = "B";
+            optionBInput.value = "O(n log n)";
             optionBCell.appendChild(optionBInput);
 
             const optionCCell = document.createElement("td");
             const optionCInput = document.createElement("input");
             optionCInput.type = "radio";
             optionCInput.name = "option" + key;
-            optionCInput.value = "C";
+            optionCInput.value = "O(n)";
             optionCCell.appendChild(optionCInput);
 
             // 将列添加到行中
@@ -651,8 +655,12 @@ function checkAnswer_rank() {
         feedback.className = 'feedback correct';
     } else {
         var feedback = document.getElementById('feedback_rank');
-
-        feedback.innerHTML = "Incorrect answer!";
+        var incorrect_feedback_text = "Incorrect answer!<br>The correct order should be: <br>";
+        for (var i=0; i<keysArray.length; i++){
+            incorrect_feedback_text = incorrect_feedback_text + "(" + (i+1) + ") " + keysArray[i] + " (<b>time complexity</b>: " + 
+            solutions[solution_name_key[keysArray[i]]].time_complexity + ", <b>reason</b>: " + solutions[solution_name_key[keysArray[i]]].reason_of_time_complexity + ")<br>";
+        }
+        feedback.innerHTML = incorrect_feedback_text;
         feedback.className = 'feedback incorrect';
     }
 }
@@ -695,24 +703,18 @@ const checkButton = document.getElementById("checkButton");
 const answerStatus = document.getElementById("answerStatus");
 
 
-
-// 点击按钮后检查答案
-checkButton.addEventListener("click", () => {
-    // 答案数据
-    const correctAnswers = {
-        "solution1": "A",
-        "solution2": "C",
-        // 在这里添加更多问题的答案
-    };
-
+function checkAnswer_matrix(){
 
     const feedback = {};
-
     // 遍历答案数据，检查每个问题的答案是否正确
-    for (const key in correctAnswers) {
-        if (correctAnswers.hasOwnProperty(key)) {
-            const correctAnswer = correctAnswers[key];
+    for (const key in solutions) {
+        if (solutions.hasOwnProperty(key)) {
+            const correctAnswer = solutions[key].time_complexity;
             const selectedAnswer = document.querySelector(`input[name="option${key}"]:checked`);
+            console.log(correctAnswer);
+            console.log(selectedAnswer);
+
+
 
             if (!selectedAnswer) {
                 feedback[key] = "Not answered";
@@ -723,17 +725,16 @@ checkButton.addEventListener("click", () => {
             }
         }
     }
-
     // 显示答案状态
     answerStatus.innerHTML = "<h3>Answer Status:</h3>";
     for (const key in feedback) {
         if (feedback.hasOwnProperty(key)) {
             const status = feedback[key];
-            answerStatus.innerHTML += `<p>Question ${key}: ${status}</p>`;
+            answerStatus.innerHTML += `<p>` + solutions[key].solution_name + `: ${status}.  ` +  " (<b>time complexity</b>: " + 
+            solutions[key].time_complexity + ", <b>reason</b>: " + solutions[key].reason_of_time_complexity + "</p>";
         }
     }
-});
-
+}
 
 
 </script>
