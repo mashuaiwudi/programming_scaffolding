@@ -21,9 +21,8 @@ import sys
 from openai import OpenAI
 
 client = OpenAI(
-    # defaults to os.environ.get("OPENAI_API_KEY")
-    # api_key='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',
-    api_key='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'
+    # please replace with an actual key
+    api_key='key'
 )
 
 
