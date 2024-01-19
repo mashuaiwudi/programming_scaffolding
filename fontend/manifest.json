@@ -22,12 +22,13 @@
     "offline_enabled": true,
     "minimum_chrome_version": "114",
     "permissions": ["sidePanel",
-    "bookmarks", 
-    "storage", 
-    "tabs",
-    "scripting",
-    "clipboardWrite",
-    "clipboardRead"],
+      "bookmarks", 
+      "storage", 
+      "tabs",
+      "scripting",
+      "clipboardWrite",
+      "clipboardRead",
+      "activeTab"],
 
     "content_scripts": [{
         "matches": ["https://leetcode.com/problems/*/description/"],
@@ -39,9 +40,7 @@
       "pages": [
         "quizs/step1.html",
         "quizs/select_rank.html", 
-        "quizs/cluster.html",
-        "quizs/parsons_example.html",
-        "quizs/code_completion3.html"
+        "quizs/parsons_example.html"
       ]
     }
 

@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Combined Page</title>
+    <!-- <link rel="stylesheet" href="../css/bootstrap.min.css"> -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -55,9 +56,37 @@
         .incorrect {
             color: red;
         }
+
+        .error-text {
+            background-color: #ff3333a4; /* 红色背景色 */
+            color: #fff; /* 白色文本颜色，用于提高可读性 */
+            padding: 10px; /* 可根据需要调整内边距 */
+            border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
+        }
+        .correct-text {
+            background-color: #0cb14385; /* 红色背景色 */
+            color: #fff; /* 白色文本颜色，用于提高可读性 */
+            padding: 10px; /* 可根据需要调整内边距 */
+            border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
+        }
+        .warning-text {
+            background-color: #f39a25ab; /* 红色背景色 */
+            color: #fff; /* 白色文本颜色，用于提高可读性 */
+            padding: 10px; /* 可根据需要调整内边距 */
+            border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
+        }
+        .info-text {
+            background-color: #319bffab; /* 红色背景色 */
+            color: #fff; /* 白色文本颜色，用于提高可读性 */
+            padding: 10px; /* 可根据需要调整内边距 */
+            border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
+        }
+
     </style>
 
 <script src="../js/jquery.min.js"></script>
+<!-- <script src="../js/bootstrap.min.js"></script> -->
+
 </head>
 <body>
 
@@ -112,6 +141,14 @@ function get_output() {
             var jsonData = (typeof data === "object") ? data : JSON.parse(data);
             console.log("JSON Object:", jsonData);
 
+            if (jsonData.output == 'false' || jsonData.output == 'False' || jsonData.output == false){
+                document.getElementById('output').className = "warning-text";
+                document.getElementById('explanation1').className = "warning-text";
+            }
+            else{
+                document.getElementById('output').className = "info-text";
+                document.getElementById('explanation1').className = "info-text";
+            }
             document.getElementById('output').innerHTML = '<b>Output:</b> ' + jsonData.output;
             document.getElementById('explanation1').innerHTML = '<b>Explanation:</b> ' + jsonData.explanation;
         }
@@ -160,10 +197,10 @@ function checkAnswer() {
             var feedbackElement = document.getElementById('feedback2');
             if (parseInt(jsonData.correctness) === 1) {
                 feedbackElement.innerHTML = "Correct! <br>" + "<b>Explanation: </b>" + explanation_text;
-                feedbackElement.className = 'correct';
+                feedbackElement.className = 'correct-text';
             } else {
                 feedbackElement.innerHTML = "Incorrect! <br>" + "<b>Explanation: </b>" + explanation_text;
-                feedbackElement.className = 'incorrect';
+                feedbackElement.className = "error-text";
             }
         }
         catch (error) {
@@ -175,6 +212,10 @@ function checkAnswer() {
 
 
 }
+
+
+
+
 </script>
 
 </body>

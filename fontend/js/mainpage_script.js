@@ -8,21 +8,21 @@ var common_prefix = "http://107.151.253.158:8088/";
 
 
 // 获取网页中的problem！
-// chrome.runtime.onMessage.addListener((request, sender) =>{
-//     console.log('request', request['problem_content']);
-//     document.getElementById('problem_content').textContent = request['problem_content'];
-//     problem_content = request['problem_content'];
-//     document.getElementById('learner_code').textContent = request['learner_code'];
-//     learner_code_content = request['learner_code'];
+chrome.runtime.onMessage.addListener((request, sender) =>{
+    console.log('request', request['problem_content']);
+    document.getElementById('problem_content').textContent = request['problem_content'];
+    problem_content = request['problem_content'];
+    document.getElementById('learner_code').textContent = request['learner_code'];
+    learner_code_content = request['learner_code'];
 
-//     console.log('???????????????why twice');
-//     console.log(learner_code_content)
-//     identify_which_step('listen');
-//     // let message = {
-//     //     problem: request['problem_content']
-//     //   };
-//     //   document.getElementById('theFrame').contentWindow.postMessage(message, '*');
-// });
+    console.log('???????????????why twice');
+    console.log(learner_code_content)
+    identify_which_step('listen');
+    // let message = {
+    //     problem: request['problem_content']
+    //   };
+    //   document.getElementById('theFrame').contentWindow.postMessage(message, '*');
+});
 
 
 
@@ -230,3 +230,23 @@ function identify_which_step(reason) {
 
 
 }
+
+
+
+// 在 panel.js 中
+// document.getElementById("myButton").addEventListener("click", function() {
+//     let message = {greeting: "hello from panel"};
+//     chrome.runtime.sendMessage(message);
+// });
+
+// 在 panel.js 中
+window.addEventListener("message", function(event) {
+    // 确保消息来源是可信的
+    console.log('received in mainpage');
+    console.log(event.source);
+    console.log(event.data.greeting);
+    if (event.data.greeting) {
+        console.log(event);
+        chrome.runtime.sendMessage(event.data);
+    }
+});

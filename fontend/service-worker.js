@@ -1,6 +1,6 @@
-// chrome.sidePanel
-//  .setPanelBehavior({openPanelOnActionClick: true})
-//  .catch((error) => console.error(error));
+chrome.sidePanel
+ .setPanelBehavior({openPanelOnActionClick: true})
+ .catch((error) => console.error(error));
 
 
 // //  chrome.runtime.onMessage.addListener((request, sender) =>{
@@ -23,3 +23,14 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       }
     })();
   });
+
+
+// 在 service-worker.js 中
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.greeting) {
+    console.log('received');
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+          chrome.tabs.sendMessage(tabs[0].id, message);
+      });
+  }
+});

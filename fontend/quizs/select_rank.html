@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- <link rel="stylesheet" href="../css/bootstrap.min.css"> -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -174,9 +175,34 @@
             text-align: left;
             font-weight: bold;
         }
+        .error-text {
+            background-color: #ff3333a4; /* 红色背景色 */
+            color: #fff; /* 白色文本颜色，用于提高可读性 */
+            padding: 10px; /* 可根据需要调整内边距 */
+            border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
+        }
+        .correct-text {
+            background-color: #0cb14385; /* 红色背景色 */
+            color: #fff; /* 白色文本颜色，用于提高可读性 */
+            padding: 10px; /* 可根据需要调整内边距 */
+            border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
+        }
+        .warning-text {
+            background-color: #f39a25ab; /* 红色背景色 */
+            color: #fff; /* 白色文本颜色，用于提高可读性 */
+            padding: 10px; /* 可根据需要调整内边距 */
+            border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
+        }
+        .info-text {
+            background-color: #319bffab; /* 红色背景色 */
+            color: #fff; /* 白色文本颜色，用于提高可读性 */
+            padding: 10px; /* 可根据需要调整内边距 */
+            border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
+        }
     </style>
 
 <script src="../js/jquery.min.js"></script>
+<!-- <script src="../js/bootstrap.min.js"></script> -->
 </head>
 <body>
 
@@ -189,7 +215,7 @@
             <div class="column" id="candidateItems"></div>
         
             <div class="column" id="selectedItems">
-                <p>Drag items here and sort them</p>candidateItems
+                <p>Drag items here and sort them</p>
             </div>
         </div>
         
@@ -227,517 +253,9 @@
         </form>
         
         <button id="checkButton" onclick="checkAnswer_matrix()">Check Answers</button>
-        <div id="answerStatus"></div>
+        <p id="feedback_matrix" class="feedback"></p>
     </div>
 
-<script>
-
-var common_prefix = "http://107.151.253.158:8088/";
-
-// 假设这是从网页中读取到的
-var programming_problem = `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-You may assume that each input would have exactly one solution, and you may not use the same element twice.
-You can return the answer in any order.`
-
-
-var jsonData = null;
-
-function call_server(){
-    // 首先，向server发送问题，得到关于solution的相关信息
-    $.ajax({
-        url: common_prefix + "generate_idea",
-        type: "GET",
-        async: true,
-        data: {
-        "problem": String(programming_problem)}
-        }).done(function (data) {
-        try{
-            console.log(data);
-
-            try {
-                jsonData = JSON.parse(data);
-                console.log("JSON Object:", jsonData); // This should print the object, not a string
-            } catch (e) {
-                console.error("Parsing error:", e);
-            }
-
-            load_interface();
-
-        }
-        catch (error) {
-            console.error('Error processing response:', error);
-        }
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('AJAX request failed:', textStatus, errorThrown);
-    });
-}
-
-
-
-
-// Given JSON data as a string
-// var jsonData = `{
-//     "solution1": {
-//         "solution_name": "Two-Pointer Technique",
-//         "solution_logic": "Use two pointers, one for iterating over the array (j) and another one (i) for keeping track of the position to overwrite with the unique elements. If nums[j] is different from nums[i], increment i and assign the value of nums[j] to nums[i]. The process continues until the end of the array.",
-//         "algorithm_used": "Two-Pointer Technique",
-//         "data_structure_used": "Array",
-//         "solution_codes": "def remove_duplicates(nums):\\n    if not nums:\\n        return 0\\n\\n    i = 0\\n    for j in range(1, len(nums)):\\n        if nums[j] != nums[i]:\\n            i += 1\\n            nums[i] = nums[j]\\n    return i + 1\\n\\n# Example usage\\n# nums = [1, 1, 2]\\n# k = remove_duplicates(nums)\\n# print(f'Number of unique elements = {k} and modified array = {nums[:k]}')"
-//     },
-//     "solution2": {
-//         "solution_name": "In-place Set Conversion",
-//         "solution_logic": "Convert the sorted array into a set to eliminate duplicates, and then write the elements back into the original array maintaining order. Because the original array is sorted, converting into a set and converting back will retain order.",
-//         "algorithm_used": "Set Conversion and Iteration",
-//         "data_structure_used": "Set and Array",
-//         "solution_codes": "def remove_duplicates(nums):\\n    unique_values = list(set(nums))\\n    unique_values.sort(key=lambda x: nums.index(x))\\n    for i in range(len(unique_values)):\\n        nums[i] = unique_values[i]\\n    return len(unique_values)\\n\\n# Example usage\\n# nums = [1, 1, 2]\\n# k = remove_duplicates(nums)\\n# print(f'Number of unique elements = {k} and modified array = {nums[:k]}')"
-//     }
-// }`;
-
-
-var solution_time_complexity = {};
-var solutions = null;
-var solution_name_key = {};
-
-function load_interface(){
-    // var jsonData = `{
-    //     "solution1": {
-    //         "solution_name": "Two-Pointer Technique",
-    //         "solution_logic": "Use two pointers, one for iterating over the array (j) and another one (i) for keeping track of the position to overwrite with the unique elements. If nums[j] is different from nums[i], increment i and assign the value of nums[j] to nums[i]. The process continues until the end of the array.",
-    //         "algorithm_used": "Two-Pointer Technique",
-    //         "data_structure_used": "Array",
-    //         "solution_codes": "def remove_duplicates(nums):\\n    if not nums:\\n        return 0\\n\\n    i = 0\\n    for j in range(1, len(nums)):\\n        if nums[j] != nums[i]:\\n            i += 1\\n            nums[i] = nums[j]\\n    return i + 1\\n\\n# Example usage\\n# nums = [1, 1, 2]\\n# k = remove_duplicates(nums)\\n# print(f'Number of unique elements = {k} and modified array = {nums[:k]}')"
-    //     },
-    //     "solution2": {
-    //         "solution_name": "In-place Set Conversion",
-    //         "solution_logic": "Convert the sorted array into a set to eliminate duplicates, and then write the elements back into the original array maintaining order. Because the original array is sorted, converting into a set and converting back will retain order.",
-    //         "algorithm_used": "Set Conversion and Iteration",
-    //         "data_structure_used": "Set and Array",
-    //         "solution_codes": "def remove_duplicates(nums):\\n    unique_values = list(set(nums))\\n    unique_values.sort(key=lambda x: nums.index(x))\\n    for i in range(len(unique_values)):\\n        nums[i] = unique_values[i]\\n    return len(unique_values)\\n\\n# Example usage\\n# nums = [1, 1, 2]\\n# k = remove_duplicates(nums)\\n# print(f'Number of unique elements = {k} and modified array = {nums[:k]}')"
-    //     }
-    // }`;
-    // var solutions = JSON.parse(jsonData);
-    solutions = jsonData;
-    console.log(solutions);
-    var candidateItemsDiv = document.getElementById('candidateItems');
-
-    // 动态创建和添加元素
-    Object.keys(solutions).forEach((key, index) => {
-        const solution = solutions[key];
-        solution_name_key[solution.solution_name] = key;
-
-
-        // 创建外层draggable元素
-        const draggableElement = document.createElement('div');
-        draggableElement.classList.add('draggable');
-        draggableElement.setAttribute('draggable', 'true');
-        draggableElement.id = String.fromCharCode('A'.charCodeAt(0) + index); // This assumes the IDs are 'A', 'B', 'C', etc.
-        draggableElement.textContent = solution.solution_name;
-
-        // 创建info-icon和tooltip
-        const infoIcon = document.createElement('span');
-        infoIcon.classList.add('info-icon');
-        infoIcon.textContent = '?';
-
-        const tooltip = document.createElement('span');
-        tooltip.classList.add('tooltip');
-        tooltip.innerHTML = `
-            <strong>Logic:</strong> ${solution.solution_logic}<br><br>
-            <strong>Algorithm Used:</strong> ${solution.algorithm_used}<br><br>
-            <strong>Data Structure Used:</strong> ${solution.data_structure_used}
-
-        `;
-        // <br><br>
-        //     <strong>Code:</strong> <pre>${solution.solution_codes}</pre>
-
-
-        // 对complexity的转化
-        if (solution.time_complexity == "O(1)"){
-            solution_time_complexity[solution.solution_name] = 0;
-            
-        }
-        if (solution.time_complexity == "O(n)"){
-            solution_time_complexity[solution.solution_name] = 1;
-        }
-        if (solution.time_complexity == "O(n log n)"){
-            solution_time_complexity[solution.solution_name] = 2;
-        }
-        if (solution.time_complexity == "O(n^2)"){
-            solution_time_complexity[solution.solution_name] = 3;
-        }
-        
-
-        // 组装元素
-        infoIcon.appendChild(tooltip);
-        draggableElement.appendChild(infoIcon);
-
-        // 将draggable元素添加到candidateItemsDiv
-        candidateItemsDiv.appendChild(draggableElement);
-    });
-
-
-
-    let draggedItem = null;
-    let placeholder = null;
-    let isDraggingStarted = false;
-
-    // 创建一个占位符
-    function createPlaceholder(height) {
-        let ph = document.createElement("div");
-        ph.classList.add("draggable");
-        ph.style.visibility = "hidden";
-        ph.style.height = `${height}px`;
-        return ph;
-    }
-
-    document.querySelectorAll('.draggable').forEach(item => {
-        item.addEventListener('dragstart', function (e) {
-
-            draggedItem = item;
-            placeholder = createPlaceholder(item.offsetHeight);
-            setTimeout(() => (item.style.display = "none"), 0);
-
-            // 创建一个临时元素用于拖动预览
-            var dragImage = item.cloneNode(true);
-            dragImage.style.position = "absolute";
-            dragImage.style.top = "-99999px"; // 将预览元素放置在屏幕之外
-            dragImage.style.width = item.offsetWidth + "px"; // 确保宽度相同
-            document.body.appendChild(dragImage); // 添加到文档中以便可以用作拖动图像
-
-            // 计算鼠标相对于元素的偏移量
-            var rect = item.getBoundingClientRect();
-            var offsetX = e.clientX - rect.left;
-            var offsetY = e.clientY - rect.top;
-
-            // 使用自定义元素作为拖动图像，并根据实际鼠标位置设置偏移
-            e.dataTransfer.setDragImage(dragImage, offsetX, offsetY);
-
-            // 在拖动结束后删除临时元素
-            setTimeout(() => {
-                document.body.removeChild(dragImage);
-            }, 0);
-        });
-        
-
-        item.addEventListener('dragend', function () {
-            draggedItem.style.display = "block";
-            draggedItem = null;
-            if (placeholder && placeholder.parentNode) {
-                placeholder.parentNode.removeChild(placeholder);
-            }
-            isDraggingStarted = false;
-        });
-    });
-
-    document.querySelectorAll('.column').forEach(column => {
-        column.addEventListener('dragover', function (e) {
-            e.preventDefault();
-            if (!draggedItem) return;
-            const afterElement = getDragAfterElement(column, e.clientY);
-            if (afterElement) {
-                column.insertBefore(placeholder, afterElement);
-            } else {
-                column.appendChild(placeholder);
-            }
-            isDraggingStarted = true;
-        });
-
-        column.addEventListener('drop', function (e) {
-            e.preventDefault();
-            if (!draggedItem) return;
-            if (isDraggingStarted) {
-                column.insertBefore(draggedItem, placeholder);
-            }
-        });
-    });
-
-
-
-
-
-
-
-    // var solutions = JSON.parse(jsonData);
-    // var candidateItemsDiv = document.getElementById('quizForm');
-
-    // 获取表单元素
-    const form = document.getElementById("quizForm");
-
-
-    // 遍历JSON数据并添加到表单元素中
-    for (const key in solutions) {
-        if (solutions.hasOwnProperty(key)) {
-            const solution = solutions[key];
-            const solutionName = solution.solution_name;
-
-            // 创建新的选项标签
-            const optionLabel = document.createElement("label");
-            optionLabel.className = "option";
-
-            // 创建复选框
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.name = "option" + key; // 使用唯一的名称
-            checkbox.value = solutionName;
-
-            // 创建标签文本
-            const labelText = document.createTextNode(" " + solutionName);
-
-            // 创建info-icon和tooltip
-            const infoIcon = document.createElement('span');
-            infoIcon.classList.add('info-icon');
-            infoIcon.textContent = '?';
-
-            const tooltip = document.createElement('span');
-            tooltip.classList.add('tooltip');
-            tooltip.innerHTML = `
-                <strong>Logic:</strong> ${solution.solution_logic}<br><br>
-                <strong>Algorithm Used:</strong> ${solution.algorithm_used}<br><br>
-                <strong>Data Structure Used:</strong> ${solution.data_structure_used}
-            `;
-            // <br><br>
-            //     <strong>Code:</strong> <pre>${solution.solution_codes}</pre>
-
-
-            // 组装元素
-            infoIcon.appendChild(tooltip);
-
-            // 将元素添加到标签中
-            optionLabel.appendChild(checkbox);
-            optionLabel.appendChild(labelText);
-            optionLabel.appendChild(infoIcon);
-
-            // 将标签添加到表单
-            form.appendChild(optionLabel);
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Matrix
-
-
-    // 获取表格元素
-    const table = document.querySelector("table");
-
-    // 遍历JSON数据并添加到表格中
-    for (const key in solutions) {
-        if (solutions.hasOwnProperty(key)) {
-            const solution = solutions[key];
-            const solutionName = solution.solution_name;
-            const solutionInfo = `Logic: ${solution.solution_logic}\nAlgorithm: ${solution.algorithm_used}\nData Structure: ${solution.data_structure_used}\nCode: ${solution.solution_codes}`;
-
-            // 创建新行（tr）
-            const row = document.createElement("tr");
-
-            // 创建第一列（Solution Name）并添加问号图标
-            const solutionCell = document.createElement("td");
-            solutionCell.textContent = solutionName;
-            solutionCell.className = "solution-cell";
-
-            // 创建info-icon和tooltip
-            const infoIcon = document.createElement('span');
-            infoIcon.classList.add('info-icon');
-            infoIcon.textContent = '?';
-
-            const tooltip = document.createElement('span');
-            tooltip.classList.add('tooltip');
-            tooltip.innerHTML = `
-                <strong>Logic:</strong> ${solution.solution_logic}<br><br>
-                <strong>Algorithm Used:</strong> ${solution.algorithm_used}<br><br>
-                <strong>Data Structure Used:</strong> ${solution.data_structure_used}
-            `;
-            // <br><br>
-            //     <strong>Code:</strong> <pre>${solution.solution_codes}</pre>
-
-            // 组装元素
-            infoIcon.appendChild(tooltip);
-            solutionCell.appendChild(infoIcon);
-
-            // 创建第二、三、四列并添加单选按钮
-            const optionACell = document.createElement("td");
-            const optionAInput = document.createElement("input");
-            optionAInput.type = "radio";
-            optionAInput.name = "option" + key;
-            optionAInput.value = "O(n^2)";
-            optionACell.appendChild(optionAInput);
-                  
-            const optionBCell = document.createElement("td");
-            const optionBInput = document.createElement("input");
-            optionBInput.type = "radio";
-            optionBInput.name = "option" + key;
-            optionBInput.value = "O(n log n)";
-            optionBCell.appendChild(optionBInput);
-
-            const optionCCell = document.createElement("td");
-            const optionCInput = document.createElement("input");
-            optionCInput.type = "radio";
-            optionCInput.name = "option" + key;
-            optionCInput.value = "O(n)";
-            optionCCell.appendChild(optionCInput);
-
-            // 将列添加到行中
-            row.appendChild(solutionCell);
-            row.appendChild(optionACell);
-            row.appendChild(optionBCell);
-            row.appendChild(optionCCell);
-
-            // 将行添加到表格中
-            table.appendChild(row);
-        }
-    }
-
-
-
-}
-
-
-
-function getDragAfterElement(container, y) {
-    const draggableElements = [...container.querySelectorAll('.draggable:not(.invisible)')];
-
-    return draggableElements.reduce((closest, child) => {
-        const box = child.getBoundingClientRect();
-        const offset = y - box.top - box.height / 2;
-        if (offset < 0 && offset > closest.offset) {
-            return { offset: offset, element: child };
-        } else {
-            return closest;
-        }
-    }, { offset: Number.NEGATIVE_INFINITY }).element;
-}
-
-function checkAnswer_rank() {
-
-    const selectedItems = document.getElementById("selectedItems").getElementsByClassName("draggable");
-    let selectedAnswers = Array.from(selectedItems).map(item => item.textContent.trim().split('?')[0]);
-
-    console.log(selectedAnswers);
-    console.log(solution_time_complexity);
-
-    let sortedArray = Object.entries(solution_time_complexity).sort((a, b) => b[1] - a[1]);
-
-    let keysArray = sortedArray.map(entry => entry[0]);
-
-    console.log(keysArray); // 输出排序后的键数组，例如：['A', 'C', 'B']
-    
-    if (selectedAnswers.length === keysArray.length && selectedAnswers.every((value, index) => value === keysArray[index])) {
-        var feedback = document.getElementById('feedback_rank');
-
-        feedback.innerHTML = "Correct!";
-        feedback.className = 'feedback correct';
-    } else {
-        var feedback = document.getElementById('feedback_rank');
-        var incorrect_feedback_text = "Incorrect answer!<br>The correct order should be: <br>";
-        for (var i=0; i<keysArray.length; i++){
-            incorrect_feedback_text = incorrect_feedback_text + "(" + (i+1) + ") " + keysArray[i] + " (<b>time complexity</b>: " + 
-            solutions[solution_name_key[keysArray[i]]].time_complexity + ", <b>reason</b>: " + solutions[solution_name_key[keysArray[i]]].reason_of_time_complexity + ")<br>";
-        }
-        feedback.innerHTML = incorrect_feedback_text;
-        feedback.className = 'feedback incorrect';
-    }
-}
-
-
-
-
-// Define the correct answers (add the actual correct answers)
-var correctAnswers = ["solution1"]; // example: only "solution1" is correct
-
-function checkAnswer_choose() {
-    var selectedOptions = [];
-    var checkboxes = document.querySelectorAll("input[type='checkbox']:checked");
-
-    // Collect all selected options
-    for (var checkbox of checkboxes) {
-        selectedOptions.push(checkbox.value);
-    }
-
-    // Compare selected options with the correct answers
-    var allCorrect = correctAnswers.every(val => selectedOptions.includes(val)) && (correctAnswers.length == selectedOptions.length);
-
-    // Provide feedback
-    if (allCorrect) {
-        var feedback = document.getElementById('feedback_choose');
-
-        feedback.innerHTML = "Correct!";
-        feedback.className = 'feedback correct';
-    } else {
-        var feedback = document.getElementById('feedback_choose');
-
-        feedback.innerHTML = "Incorrect answer!";
-        feedback.className = 'feedback incorrect';
-    }
-}
-
-
-// 获取检查按钮和结果消息元素
-const checkButton = document.getElementById("checkButton");
-const answerStatus = document.getElementById("answerStatus");
-
-
-function checkAnswer_matrix(){
-
-    const feedback = {};
-    // 遍历答案数据，检查每个问题的答案是否正确
-    for (const key in solutions) {
-        if (solutions.hasOwnProperty(key)) {
-            const correctAnswer = solutions[key].time_complexity;
-            const selectedAnswer = document.querySelector(`input[name="option${key}"]:checked`);
-            console.log(correctAnswer);
-            console.log(selectedAnswer);
-
-
-
-            if (!selectedAnswer) {
-                feedback[key] = "Not answered";
-            } else if (selectedAnswer.value === correctAnswer) {
-                feedback[key] = "Correct";
-            } else {
-                feedback[key] = "Incorrect";
-            }
-        }
-    }
-    // 显示答案状态
-    answerStatus.innerHTML = "<h3>Answer Status:</h3>";
-    for (const key in feedback) {
-        if (feedback.hasOwnProperty(key)) {
-            const status = feedback[key];
-            answerStatus.innerHTML += `<p>` + solutions[key].solution_name + `: ${status}.  ` +  " (<b>time complexity</b>: " + 
-            solutions[key].time_complexity + ", <b>reason</b>: " + solutions[key].reason_of_time_complexity + "</p>";
-        }
-    }
-}
-
-
-</script>
-
+<script src="../js/select_rank.js"></script>
 </body>
 </html>
