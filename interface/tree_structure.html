@@ -161,7 +161,7 @@
         select#language-selector {
             border-radius: 4px; /* Rounded corners */
             border: 1px solid #bdc3c7; /* A light grey border */
-            padding: 10px; /* Padding for better text visibility */
+            padding: 5px; /* Padding for better text visibility */
             background-color: #fff; /* White background for clarity */
             box-sizing: border-box; /* Include padding and border in width */
             resize: none; /* Disable resizing for textarea */
@@ -200,7 +200,7 @@
 
         
         #steps-container {
-            height: 100%;
+            height: 80%;
             overflow-y: auto;
             padding: 5px;
             box-sizing: border-box;
@@ -262,42 +262,68 @@
 
 .correct {
     background-color: #dff0d8; /* 绿色背景色 */
-    color: #3c763d; /* 绿色文本颜色 */
+    border: 2px solid #3c763d;
 }
 
 .correct::before {
     content: '✓'; /* 可以替换为合适的图标或使用背景图 */
     color: #3c763d;
-    font-size: 16px; /* 根据需要调整 */
+    font-size: 14px; /* 根据需要调整 */
 }
 
 .missing {
     background-color: #ffffff;
-    color: #000000;
+    border: 2px solid #ddd;
 }
 
 
 .incorrect {
     background-color: #f2dede; /* 红色背景色 */
-    color: #a94442; /* 红色文本颜色 */
+    border: 2px solid #a94442;
 }
 
 .incorrect::before {
     content: '✗'; /* 可以替换为合适的图标或使用背景图 */
     color: #a94442;
-    font-size: 16px; /* 根据需要调整 */
+    font-size: 14px; /* 根据需要调整 */
 }
+
+
+
+.systemgiven {
+    background-color: #d9edf7; 
+    border: 2px solid #31708f;
+}
+
+.systemgiven::before {
+    content: 'AI'; /* 错号 */
+    color: #31708f; /* 对号颜色 */
+    font-size: 16px; /* 调整字体大小 */
+}
+
+
+.mapped {
+    background-color: #dff0d8; 
+    border: 2px solid #3c763d;
+}
+
+.mapped::before {
+    content: '⇔'; /* 错号 */
+    color: #3c763d; /* 对号颜色 */
+    font-size: 16px; /* 调整字体大小 */
+}
+
 
 
 .unmapped {
     background-color: #fcf8e3;
-    color: #8a6d3b;
+    border: 2px solid #8a6d3b;
 }
 
 .unmapped::before {
     content: '⇎';
     color: #a94442;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 
@@ -505,7 +531,7 @@
             padding: 15px; /* Padding for better readability */
             border-radius: 5px; /* Rounded corners for aesthetic appeal */
             border: 1px solid #ccc; /* Light border to define the area */
-            font-size: 14px; /* Adjusting font size for better readability */
+            font-size: 12px; /* Adjusting font size for better readability */
         }
 
         .CodeMirror {
@@ -514,7 +540,7 @@
         /* Targeting directly the text container within CodeMirror */
         .CodeMirror {
             font-family: 'Arial', sans-serif !important; /* Using !important to ensure override */
-            font-size: 14px; /* Adjusting font size for better readability */
+            font-size: 12px; /* Adjusting font size for better readability */
             /* height: auto;  */
             /* Flexible height */
             border: 1px solid #ccc; /* Consistent styling with other elements */
@@ -601,21 +627,14 @@
             min-height: 20px;  /* 确保文本区域有基础高度 */
             max-height: 35px; /* 设置最大高度 */
             cursor: text;
-            width: 100%; /* 设置宽度为父元素的一半 */
+            width: 99%; /* 设置宽度为父元素的一半 */
             /* width: calc(100% - 40px); */
             overflow: hidden;
             overflow-y: auto; /* 当内容超过高度时自动显示垂直滚动条 */
             margin-bottom: 5px; /* 调整底部外边距，减少间距 */
-        }
-
-
-
-
-
-        .text-content_sub {
-            min-height: 20px;  /* 确保文本区域有基础高度 */
-            max-height: 35px; /* 设置最大高度 */
-            cursor: text;
+            border: 1px solid #aaa;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: transparent;
         }
 
 
@@ -661,6 +680,7 @@
             display: flex;
             align-items: center;
             margin-right: 20px; /* Space between legend items */
+            font-size: 12px;
         }
 
         .legend-box {
@@ -679,7 +699,7 @@
         .correct_legend::before {
             content: '✓'; /* 对号 */
             color: #3c763d; /* 对号颜色 */
-            font-size: 14px; /* 调整字体大小 */
+            font-size: 16px; /* 调整字体大小 */
             position: absolute;
         }
 
@@ -698,9 +718,25 @@
         .incorrect_legend::before {
             content: '✗'; /* 错号 */
             color: #a94442; /* 错号颜色 */
-            font-size: 14px; /* 调整字体大小 */
+            font-size: 16px; /* 调整字体大小 */
             position: absolute;
         }
+
+        .systemgiven_legend {
+            background-color: #d9edf7; /* 红色背景 */
+            border: 2px solid #31708f;
+            position: relative;
+        }
+
+        .systemgiven_legend::before {
+            content: 'AI'; /* 错号 */
+            color: #31708f; /* 错号颜色 */
+            font-size: 16px; /* 调整字体大小 */
+            position: absolute;
+        }
+
+
+
 
 
         .unmapped_legend {
@@ -714,7 +750,7 @@
         .unmapped_legend::before {
             content: '⇎'; /* 错号 */
             color: #a94442; /* 错号颜色 */
-            font-size: 14px; /* 调整字体大小 */
+            font-size: 16px; /* 调整字体大小 */
             position: absolute;
         }
 
@@ -730,7 +766,7 @@
         .mapped_legend::before {
             content: '⇔'; /* 错号 */
             color: #3c763d; /* 对号颜色 */
-            font-size: 14px; /* 调整字体大小 */
+            font-size: 16px; /* 调整字体大小 */
             position: absolute;
         }
 
@@ -778,12 +814,7 @@
             padding: 10px; /* 可根据需要调整内边距 */
             border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
         }
-        .info-text {
-            background-color: #d9edf7; /* 红色背景色 */
-            color: #31708f; /* 白色文本颜色，用于提高可读性 */
-            padding: 10px; /* 可根据需要调整内边距 */
-            border-radius: 5px; /* 可根据需要调整边框半径，使其更圆角 */
-        }
+
 
 
 
@@ -832,6 +863,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            font-size: 12px;
         }
         th, td {
             border: 1px solid #ccc;
@@ -891,11 +923,11 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding: 10px 15px;
+            padding: 5px 5px;
             border: 1px solid #ccc;
             background-color: #f9f9f9;
             color: #333;
-            font-size: 16px;
+            font-size: 14px;
             border-radius: 5px;
             text-decoration: none;
             transition: background-color 0.2s;
@@ -904,8 +936,8 @@
             background-color: #e9e9e9;
         }
         #show-problem-list img {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             margin-right: 10px;
         }
         #content {
@@ -924,7 +956,7 @@
 
     <div class="container">
         <div class="left">
-            <h2 id="question_name">Question: Roman to Integer</h2>
+            <h3 id="question_name">Question: Roman to Integer</h3>
             <button id="show-problem-list">
                 <img src="list.png" alt="icon">
                 Problem List
@@ -964,10 +996,10 @@ Given a roman numeral, convert it to an integer.
 
         </div>
         <div class="center">
-            <h2>Editor</h2>
+            <h3>Editor</h3>
             <div class="shuai_layout">
-                <p>Choose Your Language</p>
-                <select style="margin-left: 7px; margin-top: 7px;" id="language-selector">
+                <p style="font-size: 14px;">Choose Your Language</p>
+                <select style="margin-left: 7px; margin-top: 11px; font-size: 12px;" id="language-selector">
                     <option value="python">Python</option>
                     <option value="javascript">JavaScript</option>
                     <option value="java">Java</option>
@@ -1060,9 +1092,9 @@ def romanToInt(s):
             </div>
             
             <div class="ma_layout">
-            <h2>Steps</h2>
+            <h3>Steps</h3>
             <img src="edit.png" style="width: 25px; height: 25px; cursor: pointer;" id="openedit-btn" onclick="openEditMode()" title="Edit your step tree">
-            <img src="save.png" style="width: 25px; height: 25px; cursor: pointer;" id="verify-btn" onclick="generateJson_fromBlock()" title="Save your edited step tree and verify the correctness">
+            <img src="save.png" style="width: 25px; height: 25px; cursor: pointer; display: none;" id="verify-btn" onclick="generateJson_fromBlock()" title="Save your edited step tree and verify the correctness">
             </div>
 
             <div class="shuai_layout">
@@ -1086,15 +1118,19 @@ def romanToInt(s):
                         <div class="legend-box can-be-divided_legend"></div>
                         <span>Can be divided</span>
                     </div>
-
+                    <div class="legend-item">
+                        <div class="legend-box systemgiven_legend"></div>
+                        <span>System generated</span>
+                    </div>
+                    
                     <div class="legend-item">
                         <div class="legend-box mapped_legend"></div>
-                        <span>Code-Step Matched</span>
+                        <span>Implemented</span>
                     </div>
 
                     <div class="legend-item">
                         <div class="legend-box unmapped_legend"></div>
-                        <span>Code-Step MisMatched</span>
+                        <span>To be coded</span>
                     </div>
                 </div>
             </div>
@@ -2156,6 +2192,10 @@ def romanToInt(s):
                         combinedStepDiv.style.flexDirection = 'column'; // 确保内容和子步骤垂直排列
 
 
+                        if (step.status["can be further divided"] == "can"){
+                            combinedStepDiv.classList.add("can-be-divided");
+                        }
+
                         container.appendChild(combinedStepDiv);
 
                         renumberSteps(container);
@@ -2190,11 +2230,12 @@ def romanToInt(s):
                     var stepDiv = createStepDiv_conditionallyAdd(step, container, user_history_stepsData[user_history_stepsData.length - 1]);
 
                     console.log(stepDiv)
+
+                    if (stepDiv !== null){
+                        steps.push(stepDiv);
+                        weights.push(stepWeight);
+                    }
                     
-                    steps.push(stepDiv);
-                    weights.push(stepWeight);
-
-
                 }
             });
 
@@ -2254,7 +2295,9 @@ def romanToInt(s):
                         combinedStepDiv.style.display = 'flex';
                         combinedStepDiv.style.flexDirection = 'column'; // 确保内容和子步骤垂直排列
 
-
+                        if (step.status["can be further divided"] == "can"){
+                            combinedStepDiv.classList.add("can-be-divided");
+                        }
                         container.appendChild(combinedStepDiv);
                         
                         renumberSteps(container);
@@ -2474,9 +2517,19 @@ def romanToInt(s):
             stepDiv.style.display = 'flex';
             stepDiv.style.flexDirection = 'column'; // 确保内容和子步骤垂直排列
 
-            var textDiv = document.createElement('div');
+            // var textDiv = document.createElement('div');
+            // textDiv.className = 'text-content';
+            // textDiv.setAttribute('contenteditable', 'true');
+
+
+            var textDiv = document.createElement('textarea');
             textDiv.className = 'text-content';
-            textDiv.setAttribute('contenteditable', 'true');
+
+            // 设置占位符内容
+            textDiv.setAttribute('placeholder', 'Input Your Thoughts');
+
+
+
 
             // 设置textContent为student current input
             textDiv.textContent = step['student current input'];
@@ -2562,7 +2615,7 @@ def romanToInt(s):
                             subStepDiv.classList.add("can-be-divided");
                         }
                         subStepDiv.innerHTML = `
-                            <div class='text-content' contenteditable='true'>${subStep['student current input']}</div>
+                            <textarea class='text-content' placeholder='Input Your Thoughts'>${subStep['student current input']}</textarea>
                         `;
 
                         var step_json = {};
@@ -2658,11 +2711,18 @@ def romanToInt(s):
             stepDiv.style.display = 'flex';
             stepDiv.style.flexDirection = 'column'; // 确保内容和子步骤垂直排列
 
-            var textDiv = document.createElement('div');
+            // var textDiv = document.createElement('div');
+            // textDiv.className = 'text-content';
+            // textDiv.setAttribute('contenteditable', 'true');
+
+                           
+
+
+            var textDiv = document.createElement('textarea');
             textDiv.className = 'text-content';
-            textDiv.setAttribute('contenteditable', 'true');
 
-
+            // 设置占位符内容
+            textDiv.setAttribute('placeholder', 'Input Your Thoughts');
 
 
             // 这里不应该是description，而是user previous input
@@ -2726,8 +2786,14 @@ def romanToInt(s):
                         subStepDiv.classList.add("can-be-divided");
                     }
                     subStepDiv.innerHTML = `
-                        <div class='text-content' contenteditable='true'>${subStep.correctStep}</div>
+                    <textarea class='text-content' placeholder='Input Your Thoughts'>${subStep.correctStep}</textarea>
                     `;
+
+
+
+
+
+
 
                     var step_json = {};
                     step_json["1"] = subStep;
@@ -2807,7 +2873,14 @@ function addAddSubStepButton(stepDiv) {
         var newSubStepDiv = document.createElement('div');
         newSubStepDiv.id = generateUUID();
         newSubStepDiv.className = 'substep missing';
-        newSubStepDiv.innerHTML = `<div class='text-content' contenteditable='true'>?</div>`;
+        newSubStepDiv.innerHTML = `<textarea class='text-content' placeholder='Input Your Thoughts'></textarea>`;
+
+
+
+
+
+
+
         addIconsAndHint(newSubStepDiv, "Try it!");
         addSplitButton_substep(newSubStepDiv, subStepsContainer); // 为子步骤添加添加和删除按钮
         addRemoveButton_substep(newSubStepDiv, subStepsContainer); // 调整为传递父容器
@@ -2843,8 +2916,14 @@ function addAddSubStepButton(stepDiv) {
                 newSubStepDiv.id = generateUUID();
                 newSubStepDiv.className = `substep missing`;
                 newSubStepDiv.innerHTML = `
-                    <div class='text-content' contenteditable='true'>?</div>
+                <textarea class='text-content' placeholder='Input Your Thoughts'></textarea>
                 `;
+
+
+
+
+
+
                 addIconsAndHint(newSubStepDiv, "Try it!");
                 addSplitButton_substep(newSubStepDiv, parentContainer);
                 addRemoveButton_substep(newSubStepDiv, parentContainer);
@@ -2931,10 +3010,20 @@ function addAddSubStepButton(stepDiv) {
             newBlock.style.display = 'flex';
             newBlock.style.flexDirection = 'column'; // 确保内容和子步骤垂直排列
 
-            var textDiv = document.createElement('div');
+            // var textDiv = document.createElement('div');
+            // textDiv.className = 'text-content';
+            // textDiv.setAttribute('contenteditable', 'true');
+            // textDiv.textContent = "?";
+
+            var textDiv = document.createElement('textarea');
             textDiv.className = 'text-content';
-            textDiv.setAttribute('contenteditable', 'true');
-            textDiv.textContent = "?";
+
+            // 设置占位符内容
+            textDiv.setAttribute('placeholder', 'Input Your Thoughts');
+
+
+
+
             newBlock.appendChild(textDiv);
 
 
@@ -3258,30 +3347,34 @@ function traverseStepsAndSubsteps_substep(parentContainer) {
 
 
         function addEditableTextContainer(stepDiv, placeholderText) {
-            var textDiv = document.createElement('div');
+            var textDiv = document.createElement('textarea');
             textDiv.className = 'text-content';
-            textDiv.setAttribute('contenteditable', 'true');
-            textDiv.setAttribute('placeholder', placeholderText); // 设置 placeholder
-            textDiv.style.minHeight = '20px'; // 确保即使为空也有一定高度
+
+            // 设置占位符内容
+            textDiv.setAttribute('placeholder', 'Input Your Thoughts');
+
+
+
+
             stepDiv.appendChild(textDiv);
 
-            // 修正contenteditable不显示placeholder的问题
-            if (!textDiv.textContent.trim()) {
-                textDiv.textContent = placeholderText;
-                textDiv.style.color = 'rgba(0, 0, 0, 0.5)'; // 设置浅色字体
-                textDiv.onfocus = function() {
-                    if (textDiv.textContent === placeholderText) {
-                        textDiv.textContent = '';
-                        textDiv.style.color = 'rgba(0, 0, 0, 1)'; // 恢复正常字体颜色
-                    }
-                };
-                textDiv.onblur = function() {
-                    if (!textDiv.textContent.trim()) {
-                        textDiv.textContent = placeholderText;
-                        textDiv.style.color = 'rgba(0, 0, 0, 0.5)';
-                    }
-                };
-            }
+            // // 修正contenteditable不显示placeholder的问题
+            // if (!textDiv.textContent.trim()) {
+            //     textDiv.textContent = placeholderText;
+            //     textDiv.style.color = 'rgba(0, 0, 0, 0.5)'; // 设置浅色字体
+            //     textDiv.onfocus = function() {
+            //         if (textDiv.textContent === placeholderText) {
+            //             textDiv.textContent = '';
+            //             textDiv.style.color = 'rgba(0, 0, 0, 1)'; // 恢复正常字体颜色
+            //         }
+            //     };
+            //     textDiv.onblur = function() {
+            //         if (!textDiv.textContent.trim()) {
+            //             textDiv.textContent = placeholderText;
+            //             textDiv.style.color = 'rgba(0, 0, 0, 0.5)';
+            //         }
+            //     };
+            // }
         }
 
         function updateEditableTextContainer(stepDiv, additionalText) {
@@ -3497,10 +3590,24 @@ function traverseStepsAndSubsteps_substep(parentContainer) {
             stepDiv.style.display = 'flex';
             stepDiv.style.flexDirection = 'column'; // 确保内容和子步骤垂直排列
 
-            var textDiv = document.createElement('div');
+
+
+            // 创建新的 textarea 元素
+            var textDiv = document.createElement('textarea');
             textDiv.className = 'text-content';
-            textDiv.setAttribute('contenteditable', 'true');
-            textDiv.textContent = "?";
+
+            // 设置占位符内容
+            textDiv.setAttribute('placeholder', 'Input Your Thoughts');
+
+
+
+            // var textDiv = document.createElement('div');
+            // textDiv.className = 'text-content';
+            // textDiv.setAttribute('contenteditable', 'true');
+            // textDiv.textContent = "?";
+
+
+
             stepDiv.appendChild(textDiv);
 
             container.appendChild(stepDiv);
@@ -3800,8 +3907,8 @@ function traverseStepsAndSubsteps_substep(parentContainer) {
                 // const subStepsContainer = step.querySelector('.substeps-container');
                 // 获取直接子节点中同时具有 'substeps-container' class 的元素
 
-                console.log(step)
-                console.log(step.children)
+                // console.log(step)
+                // console.log(step.children)
                 const subStepsContainer = Array.from(step.children).find(child => child.classList.contains('substeps-container'));
                 if (subStepsContainer) {
                     // const subSteps = Array.from(subStepsContainer.children).find(child => child.classList.contains('substep'));
@@ -4337,12 +4444,31 @@ function traverseStepsAndSubsteps_substep(parentContainer) {
 
                     // Highlight steps or substeps that do not have corresponding code
                     var container = document.getElementById('steps-container');
+
+
+
+                    const steps = document.querySelectorAll('.step');
+
+
+                    count = 1;
+                    steps.forEach(element => {
+                        if(!stepsWithoutCode.includes(count)){
+                            element.className = "step mapped";
+                        }
+                    });
+
+
                     stepsWithoutCode.forEach(function(step) {
                         console.log(container.childNodes[step-1].className);
                         current_statusofthebox.push(container.childNodes[step-1].className);
                         // container.childNodes[step-1].className = "step_highlight";
-                        container.childNodes[step-1].className = "unmapped";
+                        container.childNodes[step-1].className = "step unmapped";
                     });
+
+
+
+
+
 
                     document.getElementById('output').innerHTML = "<p>The highlighted code line in the editor cannot find the corresponding step in the step box.</p><p>The highlighted box in the step box cannot find the corresponding code line in the editor.</p><button class='button' onclick='ok_isee()' id='okButton'>I See</button>";
 
@@ -5087,7 +5213,8 @@ function matchAndAssignIds(originalJson, studentJson) {
             document.getElementById("verify-btn").style.display = "block";
             const elements = document.querySelectorAll('.text-content');
             elements.forEach(element => {
-                element.contentEditable = 'true';
+                // element.contentEditable = 'true';
+                element.removeAttribute('readonly');
             });
 
             editmode_on = true;
@@ -5102,7 +5229,8 @@ function matchAndAssignIds(originalJson, studentJson) {
             document.getElementById("verify-btn").style.display = "none";
             const elements = document.querySelectorAll('.text-content');
             elements.forEach(element => {
-                element.contentEditable = 'false';
+                // element.contentEditable = 'false';
+                element.setAttribute('readonly', true);
             });
 
 
@@ -5191,6 +5319,8 @@ function matchAndAssignIds(originalJson, studentJson) {
                 // 先得到step-container
                 var stepContainer = stepDiv.parentNode;
 
+                var toinsert = [];
+
                 // 遍历step_json，不断添加新的stepDiv
                 Object.entries(step_json).forEach(([subStepId, subStep], index, array) => {
                     var newStepDiv = document.createElement('div');
@@ -5201,29 +5331,56 @@ function matchAndAssignIds(originalJson, studentJson) {
                     newStepDiv.id = generateUUID();
 
                     if (index === array.length - 1){
-                        newStepDiv.className = `step info`;
+                        newStepDiv.className = `step systemgiven`;
                     }
                     else{
                         newStepDiv.className = `step missing`;
                     }
                     
                     newStepDiv.innerHTML = `
-                        <div class='text-content' contenteditable='true'>${index === array.length - 1 ? subStep.correctStep : '?'}</div>
+                        <textarea class='text-content' placeholder='Input Your Thoughts'>${index === array.length - 1 ? subStep.correctStep : ''}</textarea>
                     `;
+
+
+
                         
+
+
+                    // 不应该往最后append，而是应该insert
                     addIconsAndHint(newStepDiv, subStep.hint);
                     addSplitButton(newStepDiv, stepContainer); // 为子步骤添加添加和删除按钮
                     addRemoveButton(newStepDiv, stepContainer); // 调整为传递父容器
                     addAddSubStepButton(newStepDiv);
-                    stepContainer.appendChild(newStepDiv);
+
+                    toinsert.push(newStepDiv)
+
+                    // addIconsAndHint(newStepDiv, subStep.hint);
+                    // addSplitButton(newStepDiv, stepContainer); // 为子步骤添加添加和删除按钮
+                    // addRemoveButton(newStepDiv, stepContainer); // 调整为传递父容器
+                    // addAddSubStepButton(newStepDiv);
+                    // stepContainer.appendChild(newStepDiv);
                     
 
-
                 });
+
+
+                for (var i=toinsert.length-1; i>=0; i--){
+                    stepContainer.insertBefore(toinsert[i], stepDiv.nextSibling)
+                }
 
                 stepContainer.removeChild(stepDiv);
                 renumberSteps(stepContainer);
                 adjustBlockHeights(stepContainer);
+
+
+                var user_current_stepsData_withid = saveToJson_withid();
+
+                console.log('更新之前')
+                console.log(user_history_stepsData[user_history_stepsData.length - 1])
+                console.log('更新之后')
+                console.log(user_current_stepsData_withid);
+
+                user_history_stepsData.push(user_current_stepsData_withid);
 
             }
 
@@ -5238,12 +5395,28 @@ function matchAndAssignIds(originalJson, studentJson) {
 
                     console.log(step.correctStep)
                     // 同时设置class为蓝色info色
-                    stepDiv.className = `step info`;
+                    stepDiv.className = `step systemgiven`;
 
                     // 没有子步骤，直接设置textDiv.textContent为step的correctStep
-                    stepDiv.innerHTML = `
-                        <div class='text-content' contenteditable='true'>${step.correctStep}</div>
-                    `;
+                    // 获取第一个匹配的元素
+                    var textContentElement = document.querySelector('.text-content');
+
+                    console.log(textContentElement)
+
+
+                    textContentElement.textContent = step.correctStep;
+
+
+
+                    var user_current_stepsData_withid = saveToJson_withid();
+
+                    console.log('更新之前')
+                    console.log(user_history_stepsData[user_history_stepsData.length - 1])
+                    console.log('更新之后')
+                    console.log(user_current_stepsData_withid);
+
+                    user_history_stepsData.push(user_current_stepsData_withid);
+
 
                 } else {
                     // 有子步骤，创建所有subStepDiv，只有最后一个subStep有内容
@@ -5281,8 +5454,8 @@ function matchAndAssignIds(originalJson, studentJson) {
                         });
         
 
-
-                        Object.entries(step).forEach(([subStepId, subStep], index, array) => {
+                        console.log(step)
+                        Object.entries(step.subSteps).forEach(([subStepId, subStep], index, array) => {
                             var subStepDiv = document.createElement('div');
                             subStepDiv.id = subStep.id;
                             // 同时设置class为蓝色info色
@@ -5295,11 +5468,16 @@ function matchAndAssignIds(originalJson, studentJson) {
                             console.log(subStep)
                             console.log(subStep.correctStep)
                             subStepDiv.innerHTML = `
-                                    <div class='text-content' contenteditable='true'>${index === array.length - 1 ? subStep.correctStep : '?'}</div>
+                                    <textarea class='text-content' placeholder='Input Your Thoughts'>${index === array.length - 1 ? subStep.correctStep : ''}</textarea>
                                 `;
+                            
+                            
+
+
+
 
                             if (index === array.length - 1){
-                                subStepDiv.className = `substep info`;
+                                subStepDiv.className = `substep systemgiven`;
                             }
                             addIconsAndHint(subStepDiv, subStep.hint);
                             addSplitButton_substep(subStepDiv, subStepsContainer); // 为子步骤添加添加和删除按钮
@@ -5307,6 +5485,16 @@ function matchAndAssignIds(originalJson, studentJson) {
                             addAddSubStepButton(subStepDiv);
                             subStepsContainer.appendChild(subStepDiv);
                             renumberSteps(subStepsContainer);
+
+
+                            var user_current_stepsData_withid = saveToJson_withid();
+
+                            console.log('更新之前')
+                            console.log(user_history_stepsData[user_history_stepsData.length - 1])
+                            console.log('更新之后')
+                            console.log(user_current_stepsData_withid);
+
+                            user_history_stepsData.push(user_current_stepsData_withid);
 
                         });
 
